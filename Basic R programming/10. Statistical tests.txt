@@ -1,0 +1,27 @@
+#Multiple Linear Regression
+install.packages("AER")
+library(AER)
+install.packages("splines")
+library(splines)
+install.packages("lmtest")
+library(lmtest)
+
+
+data("CPS1988")
+
+summary(CPS1988)
+cps_lm <- lm((wage) ~ experience  +
+               + education + ethnicity, data = CPS1988)
+summary(cps_lm)
+
+confint(cps_lm,level = 0.95)
+
+par(mfrow = c(2, 2))
+
+plot(cps_lm)
+
+vif(cps_lm)
+
+bptest(cps_lm)
+
+

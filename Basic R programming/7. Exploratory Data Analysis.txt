@@ -1,0 +1,49 @@
+#Exploratory Data Analysis
+install.packages("AER")
+library(AER)
+
+data("CPS1985")
+str(CPS1985)
+head(CPS1985)
+levels(CPS1985$occupation)[c(2, 6)] <- c("techn", "mgmt")
+attach(CPS1985)
+#One numerical variable
+
+summary(wage)
+
+hist(wage, freq = FALSE)
+hist(log(wage), freq = FALSE)
+lines(density(log(wage)), col = 4)
+
+#One categorical variable
+summary(occupation)
+tab <- table(occupation)
+prop.table(tab)
+barplot(tab)
+pie(tab)
+
+#Two categorical variables
+xtabs(~ gender + occupation, data = CPS1985)
+plot(gender ~ occupation, data = CPS1985)
+
+#Two numerical variables
+cor(log(wage), education)
+cor(log(wage), education, method = "spearman")
+plot(log(wage) ~ education)
+
+#One numerical and one categorical variable
+tapply(log(wage), gender, mean)
+par(mfrow = c(1, 2))
+boxplot(log(wage)~ gender)
+
+mwage <- subset(CPS1985, gender == "male")$wage
+fwage <- subset(CPS1985, gender == "female")$wage
+qqplot(mwage, fwage, xlim = range(wage), ylim = range(wage),
+  xaxs = "i", yaxs = "i", xlab = "male", ylab = "female")
+abline(0, 1)
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+#Multiple Linear Regression
+install.packages("AER")
+library(AER)
+install.packages("splines")
+library(splines)
+
+data("CPS1988")
+summary(CPS1988)
+cps_lm <- lm(log(wage) ~ experience + I(experience^2) +
+               + education + ethnicity, data = CPS1988)
+summary(cps_lm)
+cps_noeth <- lm(log(wage) ~ experience + I(experience^2) +
+                  + education, data = CPS1988)
+anova(cps_noeth, cps_lm)
+anova(cps_lm)
+cps_noeth <- update(cps_lm, formula = . ~ . - ethnicity)
+
+cps_plm <- lm(log(wage) ~ bs(experience, df = 5) +
+                education + ethnicity, data = CPS1988)
+cps_int <- lm(log(wage) ~ experience + I(experience^2) +
+                + education * ethnicity, data = CPS1988)
+coeftest(cps_int)
+
+cps_int <- lm(log(wage) ~ experience + I(experience^2) +
+                   education + ethnicity + education:ethnicity,
+                 data = CPS1988)
+summary(cps_int)
+confint(cps_int,level = 0.95)
+
+
